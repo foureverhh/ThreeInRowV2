@@ -37,28 +37,34 @@ public class Player
     }
 
 
-    public void setX() {
-        System.out.println(this.getName()+" ,your turn to input your coordinate X(1-3):");
+    public void setX(Board b) {
+        System.out.println(this.getName()+" ,your turn to input your coordinate X(input a number):");
         Scanner sc = new Scanner(System.in);
-        x = getCoordinate(sc);
+        x = getCoordinate(sc,b);
         this.x = x-1;
     }
 
-    public void setMachineX() {
-        Random r = new Random();
-        this.x = r.nextInt(3);
-    }
-
-    public void setY() {
-        System.out.println(this.getName()+" ,your turn to input your coordinate y(1-3):");
+    public void setY(Board b) {
+        System.out.println(this.getName()+" ,your turn to input your coordinate y(input a number):");
         Scanner sc = new Scanner(System.in);
-        y = getCoordinate(sc);
+        y = getCoordinate(sc,b);
         this.y = y-1;
     }
 
-    public void setMachineY() {
+    public void setMachineX(Board b) {
         Random r = new Random();
-        this.y = r.nextInt(3);
+
+        int a = b.getRolAndCol();
+        System.out.println(a);
+        int c = r.nextInt(a);
+        System.out.println(c);
+        this.x = c;
+
+    }
+
+    public void setMachineY(Board b) {
+        Random r = new Random();
+        this.y = r.nextInt(b.getRolAndCol());
     }
 
     public int getPoint() {
@@ -93,23 +99,31 @@ public class Player
         return chessLabel;
     }
 
-    private int getCoordinate(Scanner sc)
+    private int getCoordinate(Scanner sc, Board b)
     {
-        while(true)
-        {
+
+        while(true) {
 
             try {
+
                 String s = sc.nextLine();
-                if(Integer.parseInt(s)<=3&&Integer.parseInt(s)>=1)
-                {
-                    return Integer.parseInt(s);
-                }
-            }
-            catch (Exception e){
+                int a = Integer.parseInt(s);
+                return a;
+            } catch (Exception e) {
                 System.out.println("Try again please. Input as required.");
             }
 
+
+            /*
+            * if(a<=b.getRolAndCol() && a>=1)
+            {
+                return a;
+            } else
+                System.out.println("Try again please. Input as required.");
+*/
         }
+
+
     }
 
     private String getStringInformation(Scanner sc)

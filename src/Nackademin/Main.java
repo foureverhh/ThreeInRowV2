@@ -6,7 +6,13 @@ public class Main {
 
     public static void main(String[] args) {
 	// write your code here
+
+
     Board gameBoard = new Board();
+    gameBoard.setRolAndCol();
+    int rowAndCol = gameBoard.getRolAndCol();
+    gameBoard = new Board(rowAndCol);
+
     Player player1 = new Player();
     Player player2 = new Player();
 
@@ -27,13 +33,14 @@ public class Main {
 
     while(!gameBoard.isGameRestart())
     {
+        gameBoard.setGameGoesOn(true);
         gameBoard.newBoard();
         gameBoard.printBoard();
-        gameBoard.setGameGoesOn(true);
+
 
         while(gameBoard.isGameGoesOn())
         {
-            gameBoard.getChess(player1);
+            gameBoard.getChess(player1,gameBoard);
             gameBoard.printBoard();
             gameBoard.getWinner(player1);
             gameBoard.showResult(player1,player2);
@@ -41,7 +48,7 @@ public class Main {
                 break;
 
             if(gameBoard.isPlayerIsMachine()) {
-                gameBoard.getMachineChess(player2);
+                gameBoard.getMachineChess(player2,gameBoard);
                 gameBoard.printBoard();
                 gameBoard.getWinner(player2);
                 gameBoard.showResult(player1, player2);
@@ -49,7 +56,7 @@ public class Main {
                     break;
             } else
             {
-                gameBoard.getChess(player2);
+                gameBoard.getChess(player2,gameBoard);
                 gameBoard.printBoard();
                 gameBoard.getWinner(player2);
                 gameBoard.showResult(player1,player2);

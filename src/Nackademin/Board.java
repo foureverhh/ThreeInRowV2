@@ -1,11 +1,13 @@
 package Nackademin;
 
+import java.util.Random;
 import java.util.Scanner;
 
 public class Board
 {
 //Instance variable
     private int x,y;
+    private int rolAndCol;
     private int blockAmount;
     private String winner;
     private boolean gameRestart;
@@ -14,13 +16,30 @@ public class Board
     private String[][] gameZone;
 
 //Constructor
-    public Board() {
-        this.blockAmount = 9;
-        this.gameZone = new String[3][3] ;
+    public Board()
+    {
+
+    }
+
+    public Board(int rowAndCol) {
+        this.blockAmount = rowAndCol*rowAndCol;
+        this.gameZone = new String[rowAndCol][rowAndCol] ;
     }
 
 
 //Instance methods
+
+    //Input how big the board would be
+    public void setRolAndCol()
+    {
+        System.out.println("Input how many rows would you like on your board?");
+        Scanner sc = new Scanner(System.in);
+        this.rolAndCol = getRowAmount(sc);
+    }
+
+    public int getRolAndCol() {
+        return rolAndCol;
+    }
 
     //Ask whether here is a machine player
     public boolean playerIsMachine()
@@ -38,8 +57,8 @@ public class Board
     //Create a new game board
     public void newBoard()
     {
-        for(int i=0;i<3;i++)
-            for(int j=0;j<3;j++)
+        for(int i=0;i<gameZone.length;i++)
+            for(int j=0;j<gameZone.length;j++)
                 this.gameZone[i][j]=" ";
     }
 
@@ -47,19 +66,19 @@ public class Board
     public void printBoard()
     {
         System.out.println("Enjoy your game,and good luck!");
-        for(int i=0;i<3;i++)
+        for(int i=0;i<gameZone.length;i++)
         {
             System.out.print(" ---");
         }
         System.out.println();
-        for(int i=0;i<3;i++){
+        for(int i=0;i<gameZone.length;i++){
 
-            for(int j=0;j<3;j++)
+            for(int j=0;j<gameZone.length;j++)
             {
                 System.out.print("| "+gameZone[i][j]+" ");
             }
             System.out.println("|");
-            for(int k=0;k<3;k++)
+            for(int k=0;k<gameZone.length;k++)
             {
                 System.out.print(" ---");
             }
@@ -69,31 +88,33 @@ public class Board
     }
 
     //Get players' chess
-    public void getChess(Player p)
+    public void getChess(Player p,Board b)
     {
-        p.setX();
-        p.setY();
+        p.setX(b);
+        p.setY(b);
         while(!gameZone[p.getX()][p.getY()].equals(" ") &&!gameZone[p.getX()][p.getY()].isEmpty())
         {
             System.out.println(p.getName()+", the place you chose is taken, try again please.");
-            p.setX();
-            p.setY();
+            p.setX(b);
+            p.setY(b);
         }
         gameZone[p.getX()][p.getY()]=p.getChessLabel();
         blockAmount--;
     }
 
+
+
     //Get Machine' chess
-    public void getMachineChess(Player p)
+    public void getMachineChess(Player p,Board b)
     {
-        p.setMachineX();
-        p.setMachineY();
-        while(!gameZone[p.getX()][p.getY()].equals(" ") &&!gameZone[p.getX()][p.getY()].isEmpty())
+        p.setMachineX(b);
+        p.setMachineY(b);
+        while(!gameZone[getX()][getY()].equals(" ") &&!gameZone[getX()][getY()].isEmpty())
         {
-            p.setMachineX();
-            p.setMachineY();
+            p.setMachineX(b);
+            p.setMachineY(b);
         }
-        gameZone[p.getX()][p.getY()]=p.getChessLabel();
+        gameZone[getX()][getY()]=p.getChessLabel();
         blockAmount--;
     }
 
@@ -117,10 +138,10 @@ public class Board
     private void checkWinnerHorizontally(Player p)
     {
         int i=0;
-        while(i<3)
+        while(i<gameZone.length)
         {
             int k=0;
-            for(int j=0;j<3;j++)
+            for(int j=0;j<gameZone.length;j++)
             {
                 if(gameZone[i][j].equals(p.getChessLabel()))
                 {
@@ -130,7 +151,7 @@ public class Board
                     break;
                 }
             }
-            if(k==3)
+            if(k==gameZone.length)
             {
                 this.winner=p.getName();
                 p.setPoint();
@@ -143,10 +164,10 @@ public class Board
     private void checkWinnerVertically(Player p)
     {
         int j=0;
-        while(j<3)
+        while(j<gameZone.length)
         {
             int k=0;
-            for(int i=0;i<3;i++)
+            for(int i=0;i<gameZone.length;i++)
             {
                 if(gameZone[i][j].equals(p.getChessLabel()))
                 {
@@ -156,7 +177,7 @@ public class Board
                     break;
                 }
             }
-            if(k==3)
+            if(k==gameZone.length)
             {
                 this.winner=p.getName();
                 p.setPoint();
@@ -169,7 +190,7 @@ public class Board
     private void checkWinnerDiagonallyBackslash(Player p)
     {
         int k=0;
-        for(int i=0;i<3;i++)
+        for(int i=0;i<gameZone.length;i++)
         {
             if(gameZone[i][i].equals(p.getChessLabel()))
             {
@@ -178,7 +199,7 @@ public class Board
                 break;
             }
 
-            if(k==3)
+            if(k==gameZone.length)
             {
                 this.winner=p.getName();
                 p.setPoint();
@@ -192,15 +213,15 @@ public class Board
     private void checkWinnerDiagonallySlash(Player p)
     {
         int k=0;
-        for(int i=0;i<3;i++)
+        for(int i=0;i<gameZone.length;i++)
         {
-            if(gameZone[i][3-i-1].equals(p.getChessLabel()))
+            if(gameZone[i][gameZone.length-i-1].equals(p.getChessLabel()))
             {
                 k++;
             }else {
                 break;
             }
-            if(k==3)
+            if(k==gameZone.length)
             {
                 this.winner=p.getName();
                 p.setPoint();
@@ -241,25 +262,13 @@ public class Board
             //Set game restart to false and make winner to be null
             gameRestart=false;
             winner=null;
+            blockAmount = getRolAndCol()*getRolAndCol();
         }
     }
 
     //Setter and getter
-    public int getX() {
-        return x;
-    }
 
-    public void setX(int x) {
-        this.x = x;
-    }
 
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
 
     public String getWinner() {
         return winner;
@@ -285,6 +294,10 @@ public class Board
         this.gameGoesOn = gameGoesOn;
     }
 
+    public boolean isPlayerIsMachine() {
+        return playerIsMachine;
+    }
+
     private String getStringInformation(Scanner sc)
     {
         while(true)
@@ -300,7 +313,27 @@ public class Board
         }
     }
 
-    public boolean isPlayerIsMachine() {
-        return playerIsMachine;
+    private int getRowAmount(Scanner sc)
+    {
+        while(true)
+        {
+
+            try {
+                String s = sc.nextLine();
+                return Integer.parseInt(s);
+            }
+            catch (Exception e){
+                System.out.println("Try again please. Input as required.");
+            }
+
+        }
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 }
