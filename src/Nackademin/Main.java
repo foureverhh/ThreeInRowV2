@@ -12,8 +12,18 @@ public class Main {
 
     player1.setName();
     player1.setChessLabel();
-    player2.setName();
-    player2.setChessLabel();
+
+    if(gameBoard.playerIsMachine())
+    {
+        player2 = new Player("Machine");
+        player2.setChessLabelMachine();
+    }
+    else
+    {
+
+        player2.setName();
+        player2.setChessLabel();
+    }
 
     while(!gameBoard.isGameRestart())
     {
@@ -30,12 +40,22 @@ public class Main {
             if(!gameBoard.isGameGoesOn())
                 break;
 
-            gameBoard.getChess(player2);
-            gameBoard.printBoard();
-            gameBoard.getWinner(player2);
-            gameBoard.showResult(player1,player2);
-            if(!gameBoard.isGameGoesOn())
-                break;
+            if(gameBoard.isPlayerIsMachine()) {
+                gameBoard.getMachineChess(player2);
+                gameBoard.printBoard();
+                gameBoard.getWinner(player2);
+                gameBoard.showResult(player1, player2);
+                if(!gameBoard.isGameGoesOn())
+                    break;
+            } else
+            {
+                gameBoard.getChess(player2);
+                gameBoard.printBoard();
+                gameBoard.getWinner(player2);
+                gameBoard.showResult(player1,player2);
+                if(!gameBoard.isGameGoesOn())
+                    break;
+            }
         }
         gameBoard.restartGame(player1, player2);
     }

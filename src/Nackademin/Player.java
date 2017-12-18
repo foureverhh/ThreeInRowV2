@@ -1,5 +1,6 @@
 package Nackademin;
 
+import java.util.Random;
 import java.util.Scanner;
 
 public class Player
@@ -7,7 +8,6 @@ public class Player
     //instance variable
     private String name;
     private String chessLabel;
-    private boolean playerIsMachine;
     private int x,y;
     private int point;
 
@@ -18,9 +18,82 @@ public class Player
 
     }
 
+    public Player(String name)
+    {
+        this.name = name;
+    }
 
     //Instance methods
-    public int getCoordinate(Scanner sc)
+    public void setChessLabel() {
+        System.out.println(this.getName()+" input your chess label here:(One signal for example X)");
+        Scanner sc = new Scanner(System.in);
+        this.chessLabel = getStringInformation(sc);
+    }
+
+    public void setChessLabelMachine() {
+        System.out.println("Input chess label for machine player here:(One signal for example X)");
+        Scanner sc = new Scanner(System.in);
+        this.chessLabel = getStringInformation(sc);
+    }
+
+
+    public void setX() {
+        System.out.println(this.getName()+" ,your turn to input your coordinate X(1-3):");
+        Scanner sc = new Scanner(System.in);
+        x = getCoordinate(sc);
+        this.x = x-1;
+    }
+
+    public void setMachineX() {
+        Random r = new Random();
+        this.x = r.nextInt(3);
+    }
+
+    public void setY() {
+        System.out.println(this.getName()+" ,your turn to input your coordinate y(1-3):");
+        Scanner sc = new Scanner(System.in);
+        y = getCoordinate(sc);
+        this.y = y-1;
+    }
+
+    public void setMachineY() {
+        Random r = new Random();
+        this.y = r.nextInt(3);
+    }
+
+    public int getPoint() {
+        return point;
+    }
+
+    public void setPoint() {
+
+        this.point ++;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+
+    public void setName() {
+        System.out.println("Input player's name here:");
+        Scanner sc = new Scanner(System.in);
+        this.name = getStringInformation(sc);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getChessLabel() {
+        return chessLabel;
+    }
+
+    private int getCoordinate(Scanner sc)
     {
         while(true)
         {
@@ -39,7 +112,7 @@ public class Player
         }
     }
 
-    public String getStringInformation(Scanner sc)
+    private String getStringInformation(Scanner sc)
     {
         while(true)
         {
@@ -52,63 +125,5 @@ public class Player
             }
 
         }
-    }
-    public String getName() {
-        return name;
-    }
-
-    public void setName() {
-        System.out.println("Input player's name here:");
-        Scanner sc = new Scanner(System.in);
-        this.name = getStringInformation(sc);
-    }
-
-    public String getChessLabel() {
-        return chessLabel;
-    }
-
-    public void setChessLabel() {
-        System.out.println(this.getName()+" input your chess label here:(One signal for example X)");
-        Scanner sc = new Scanner(System.in);
-        this.chessLabel = getStringInformation(sc);
-    }
-
-    public boolean isPlayerIsMachine() {
-        return playerIsMachine;
-    }
-
-    public void setPlayerIsMachine(boolean playerIsMachine) {
-        this.playerIsMachine = playerIsMachine;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public void setX() {
-        System.out.println(this.getName()+" ,your turn to input your coordinate X(1-3):");
-        Scanner sc = new Scanner(System.in);
-        x = getCoordinate(sc);
-        this.x = x-1;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY() {
-        System.out.println(this.getName()+" ,your turn to input your coordinate y(1-3):");
-        Scanner sc = new Scanner(System.in);
-        y = getCoordinate(sc);
-        this.y = y-1;
-    }
-
-    public int getPoint() {
-        return point;
-    }
-
-    public void setPoint() {
-
-        this.point ++;
     }
 }

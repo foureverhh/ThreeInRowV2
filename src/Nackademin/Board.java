@@ -10,6 +10,7 @@ public class Board
     private String winner;
     private boolean gameRestart;
     private boolean gameGoesOn;
+    private boolean playerIsMachine;
     private String[][] gameZone;
 
 //Constructor
@@ -20,6 +21,19 @@ public class Board
 
 
 //Instance methods
+
+    //Ask whether here is a machine player
+    public boolean playerIsMachine()
+    {
+        System.out.println("Do you want to play with a machine?(Y/N)");
+        Scanner sc = new Scanner(System.in);
+        String str = sc.nextLine();
+        if(str.toLowerCase().equals("y"))
+        {
+            playerIsMachine = true;
+        }
+        return playerIsMachine;
+    }
 
     //Create a new game board
     public void newBoard()
@@ -69,7 +83,19 @@ public class Board
         blockAmount--;
     }
 
-    //
+    //Get Machine' chess
+    public void getMachineChess(Player p)
+    {
+        p.setMachineX();
+        p.setMachineY();
+        while(!gameZone[p.getX()][p.getY()].equals(" ") &&!gameZone[p.getX()][p.getY()].isEmpty())
+        {
+            p.setMachineX();
+            p.setMachineY();
+        }
+        gameZone[p.getX()][p.getY()]=p.getChessLabel();
+        blockAmount--;
+    }
 
     //Get winner
     public void getWinner(Player p)
@@ -84,6 +110,7 @@ public class Board
         if (winner != null)
             return;
         checkWinnerVertically(p);
+
     }
 
     //Check horizontally
@@ -186,14 +213,14 @@ public class Board
     {
         if(winner!=null){
             System.out.println("Winner is "+winner+"\n"
-                    +p1.getName()+" won "+p1.getPoint()+" times."+"\n"
-                    +p2.getName()+" won "+p2.getPoint()+" times."+"\n");
+                    +p1.getName()+" win "+p1.getPoint()+" times."+"\n"
+                    +p2.getName()+" win "+p2.getPoint()+" times."+"\n");
             gameGoesOn=false;
 
         }else if(blockAmount==0){
             System.out.println("All blocks are used up, no winner this round"+"\n"
-                    +p1.getName()+" won "+p1.getPoint()+" times."+"\n"
-                    +p2.getName()+" won "+p2.getPoint()+" times."+"\n");
+                    +p1.getName()+" win "+p1.getPoint()+" times."+"\n"
+                    +p2.getName()+" win "+p2.getPoint()+" times."+"\n");
             gameGoesOn=false;
         }
     }
@@ -201,7 +228,7 @@ public class Board
     //Ask whether restart game
     public void restartGame(Player p1,Player p2)
     {
-        System.out.println("Do you players want to restart the game?(Y/N)");
+        System.out.println("Game continues?(Y/N)");
         Scanner sc = new Scanner(System.in);
         if(getStringInformation(sc).toLowerCase().equals("n"))
         {
@@ -209,6 +236,11 @@ public class Board
             System.out.println("Game is over, see you next time!" + "\n"
                     + p1.getName() + " won " + p1.getPoint() + " times." + "\n"
                     + p2.getName() + " won " + p2.getPoint() + " times." + "\n");
+        } else
+        {
+            //Set game restart to false and make winner to be null
+            gameRestart=false;
+            winner=null;
         }
     }
 
@@ -253,7 +285,7 @@ public class Board
         this.gameGoesOn = gameGoesOn;
     }
 
-    public String getStringInformation(Scanner sc)
+    private String getStringInformation(Scanner sc)
     {
         while(true)
         {
@@ -267,5 +299,8 @@ public class Board
 
         }
     }
-    //
+
+    public boolean isPlayerIsMachine() {
+        return playerIsMachine;
+    }
 }
