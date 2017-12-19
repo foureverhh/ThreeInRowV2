@@ -12,7 +12,6 @@ public class Board
     private String winner;
     private boolean gameRestart;
     private boolean gameGoesOn;
-    private boolean playerIsMachine;
     private String[][] gameZone;
 
 //Constructor
@@ -28,31 +27,6 @@ public class Board
 
 
 //Instance methods
-
-    //Input how big the board would be
-    public void setRolAndCol()
-    {
-        System.out.println("Input how many rows would you like on your board?");
-        Scanner sc = new Scanner(System.in);
-        this.rolAndCol = getRowAmount(sc);
-    }
-
-    public int getRolAndCol() {
-        return rolAndCol;
-    }
-
-    //Ask whether here is a machine player
-    public boolean playerIsMachine()
-    {
-        System.out.println("Do you want to play with a machine?(Y/N)");
-        Scanner sc = new Scanner(System.in);
-        String str = sc.nextLine();
-        if(str.toLowerCase().equals("y"))
-        {
-            playerIsMachine = true;
-        }
-        return playerIsMachine;
-    }
 
     //Create a new game board
     public void newBoard()
@@ -88,15 +62,16 @@ public class Board
     }
 
     //Get players' chess
-    public void getChess(Player p,Board b)
+    public void getChess(Player p,int rolAndCol)
     {
-        p.setX(b);
-        p.setY(b);
+        System.out.println("rowAndCol is "+rolAndCol);
+        p.setX(rolAndCol);
+        p.setY(rolAndCol);
         while(!gameZone[p.getX()][p.getY()].equals(" ") &&!gameZone[p.getX()][p.getY()].isEmpty())
         {
             System.out.println(p.getName()+", the place you chose is taken, try again please.");
-            p.setX(b);
-            p.setY(b);
+            p.setX(rolAndCol);
+            p.setY(rolAndCol);
         }
         gameZone[p.getX()][p.getY()]=p.getChessLabel();
         blockAmount--;
@@ -105,17 +80,18 @@ public class Board
 
 
     //Get Machine' chess
-    public void getMachineChess(Player p,Board b)
+    public void getMachineChess(Player p,int rolAndCol)
     {
-        p.setMachineX(b);
-        p.setMachineY(b);
-        while(!gameZone[getX()][getY()].equals(" ") &&!gameZone[getX()][getY()].isEmpty())
+        p.setMachineX(rolAndCol);
+        p.setMachineY(rolAndCol);
+        while(!gameZone[p.getX()][p.getY()].equals(" ") &&!gameZone[p.getX()][p.getY()].isEmpty())
         {
-            p.setMachineX(b);
-            p.setMachineY(b);
+            p.setMachineX(rolAndCol);
+            p.setMachineY(rolAndCol);
         }
-        gameZone[getX()][getY()]=p.getChessLabel();
+        gameZone[p.getX()][p.getY()]=p.getChessLabel();
         blockAmount--;
+        System.out.println(blockAmount+" blocks left");
     }
 
     //Get winner
@@ -294,10 +270,6 @@ public class Board
         this.gameGoesOn = gameGoesOn;
     }
 
-    public boolean isPlayerIsMachine() {
-        return playerIsMachine;
-    }
-
     private String getStringInformation(Scanner sc)
     {
         while(true)
@@ -317,7 +289,6 @@ public class Board
     {
         while(true)
         {
-
             try {
                 String s = sc.nextLine();
                 return Integer.parseInt(s);
@@ -327,6 +298,10 @@ public class Board
             }
 
         }
+    }
+
+    public int getRolAndCol() {
+        return rolAndCol;
     }
 
     public int getX() {

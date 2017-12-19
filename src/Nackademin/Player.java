@@ -1,5 +1,7 @@
 package Nackademin;
 
+import sun.awt.SunHints;
+
 import java.util.Random;
 import java.util.Scanner;
 
@@ -37,34 +39,33 @@ public class Player
     }
 
 
-    public void setX(Board b) {
-        System.out.println(this.getName()+" ,your turn to input your coordinate X(input a number):");
+    public void setX(int rowAndCol) {
+        System.out.println(this.getName()+
+                " ,your turn to input your coordinate X(input a number less than row number):");
         Scanner sc = new Scanner(System.in);
-        x = getCoordinate(sc,b);
+        x = getCoordinate(sc,rowAndCol);
         this.x = x-1;
     }
 
-    public void setY(Board b) {
-        System.out.println(this.getName()+" ,your turn to input your coordinate y(input a number):");
+    public void setY(int rowAndCol) {
+        System.out.println(this.getName()+
+                " ,your turn to input your coordinate y(input a number less than row number):");
         Scanner sc = new Scanner(System.in);
-        y = getCoordinate(sc,b);
+        y = getCoordinate(sc,rowAndCol);
         this.y = y-1;
     }
 
-    public void setMachineX(Board b) {
+    public void setMachineX(int rowAndCol) {
         Random r = new Random();
-
-        int a = b.getRolAndCol();
-        System.out.println(a);
-        int c = r.nextInt(a);
-        System.out.println(c);
-        this.x = c;
+        this.x = r.nextInt(rowAndCol);
+        System.out.println("Show X "+x);
 
     }
 
-    public void setMachineY(Board b) {
+    public void setMachineY(int rowAndCol) {
         Random r = new Random();
-        this.y = r.nextInt(b.getRolAndCol());
+        this.y = r.nextInt(rowAndCol);
+        System.out.println("Show Y "+y);
     }
 
     public int getPoint() {
@@ -99,42 +100,37 @@ public class Player
         return chessLabel;
     }
 
-    private int getCoordinate(Scanner sc, Board b)
-    {
-
-        while(true) {
-
-            try {
-
+    private int getCoordinate(Scanner sc,int rowAndCol)
+    {      //To check whether the input is a number
+        while (true)
+        {
+            try
+            {
                 String s = sc.nextLine();
-                int a = Integer.parseInt(s);
-                return a;
-            } catch (Exception e) {
+                int value = Integer.parseInt(s);
+                if(value>=1 && value<=rowAndCol)
+                {
+                    return value;
+                }
+                //Value out of range, throw error
+                throw new Exception("Try again.");
+            } catch (Exception e)
+            {
                 System.out.println("Try again please. Input as required.");
             }
-
-
-            /*
-            * if(a<=b.getRolAndCol() && a>=1)
-            {
-                return a;
-            } else
-                System.out.println("Try again please. Input as required.");
-*/
         }
-
-
     }
 
-    private String getStringInformation(Scanner sc)
+    public String getStringInformation(Scanner sc)
     {
         while(true)
         {
-            try {
-                String s = sc.nextLine();
-                return s;
+            try
+            {
+                return sc.nextLine();
             }
-            catch (Exception e){
+            catch (Exception e)
+            {
                 System.out.println("Try again please. Input as required.");
             }
 
